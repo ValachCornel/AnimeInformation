@@ -1,0 +1,121 @@
+﻿<Window x:Class="AnimeInformation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AnimeInformation"
+        xmlns:vm="clr-namespace:AnimeInformation.MVVM"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="800"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        BorderThickness="0"
+        Background="#DE6449">
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border MouseDown="Border_MouseDown"
+                Grid.Column="1"
+                Background="Transparent">
+
+            <StackPanel HorizontalAlignment="Right" 
+                        Orientation="Horizontal">
+                <Button Width="30" 
+                            Content="🗕"
+                            Click="MinimiezeEvent_Click"       
+                            Margin="0,-5,0,0"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Height="30"/>
+
+                <Button Width="30" 
+                        Click="ExitEvent_Click"        
+                        Content="✕"                        
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Foreground="White"
+                        Height="30"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="1" Height="450"
+                    Visibility="{Binding AddPanel}"
+                    VerticalAlignment="Top">
+            <DataGrid ItemsSource="{Binding DataGrid}"       
+                      SelectedItem="{Binding SelectedGrid}"
+                      BorderThickness="0"
+                      Background="#FFFFF2"
+                      ColumnWidth="100"
+                      Width="600"
+                      Height="300"
+                      Margin="50,50,50,0">
+            </DataGrid>
+
+            <Button Width="100"
+                    Margin="0,30,150,0"
+                    Content="Save"
+                    FontWeight="SemiBold"
+                    BorderThickness="0"
+                    Foreground="Black"
+                    Background="#FFFFF2"
+                    Command="{Binding SaveCommand}"
+                    Height="30">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Width="100"
+                    Margin="150,-30,0,0"
+                    Content="Delete"
+                    FontWeight="SemiBold"
+                    BorderThickness="0"
+                    Foreground="Black"
+                    Background="#FFFFF2"
+                    Command="{Binding DeleteCommand}"
+                    Height="30">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel >
+
+        <StackPanel Grid.Row="1" Height="450"
+                    Visibility="{Binding ViewPanel}"
+                    VerticalAlignment="Top">
+            
+        </StackPanel>
+        
+        <Button Width="100"
+                Margin="0,450,0,0"
+                Content="{Binding ButtonText}"
+                FontWeight="SemiBold"
+                BorderThickness="0"
+                Foreground="Black"
+                Background="#FFFFF2"
+                Command="{Binding SwitchCommand}"
+                Height="30" Grid.Row="1">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+    </Grid>
+</Window>
