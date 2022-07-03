@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Documents;
 using System.Xml.Linq;
 
 namespace AnimeInformation.MVVM
@@ -47,16 +48,86 @@ namespace AnimeInformation.MVVM
     {
         public MainViewModel()
         {
-            ButtonText = "Info";
+            AnimeList = new ObservableCollection<string>();
             DataGrid = new ObservableCollection<Anime>();
+            Link = "https://putridparrot.com/blog/the-wpf-hyperlink/";
+            ButtonText = "Info";
             LoadFromXml();           
-            AddPanel = "Visible";
+            AddPanel = "Visible";            
             EditPanel = "Hidden";
             InitializeCommands();
         }
 
         public bool isEdit = false;
         string filepath = Directory.GetCurrentDirectory() + "\\Save.xml";
+
+        private string _link;
+        public string Link
+        {
+            get { return _link; }
+            set
+            {
+                _link = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<string> _animeList;
+        public ObservableCollection<string> AnimeList
+        {
+            get { return _animeList; }
+            set
+            {
+                _animeList = value;
+                
+                OnPropertyChanged();               
+            }
+        }
+
+        private string _selectedAnime;
+        public string SelectedAnime
+        {
+            get { return _selectedAnime; }
+            set
+            {
+                _selectedAnime = value;
+                OnComboBoxChanged();
+                OnPropertyChanged();
+            }
+        }
+
+        private string _imagePath;
+        public string ImagePath
+        {
+            get { return _imagePath; }
+            set
+            {
+                _imagePath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _description;
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                _description = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _seasons;
+        public int Seasons
+        {
+            get { return _seasons; }
+            set
+            {
+                _seasons = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _buttonText;
         public string ButtonText
@@ -111,6 +182,48 @@ namespace AnimeInformation.MVVM
                 OnPropertyChanged();
             }
         }
+        protected virtual void OnComboBoxChanged()
+        {
+            XDocument doc = null;
+            if (File.Exists(filepath))
+                doc = XDocument.Load(filepath);
+
+            if (doc == null) return;
+
+            XAttribute attribute = null;
+
+
+            foreach (var item in doc.Root.Elements())
+            {
+                if(item.Attribute("name").Value == SelectedAnime)
+                {
+                    var anime = new Anime();                                    
+
+                    attribute = item.Attribute("path");
+                    if (attribute != null)
+                        anime.ImagePath = attribute.Value;
+
+                    attribute = item.Attribute("desc");
+                    if (attribute != null)
+                        anime.Description = attribute.Value;
+
+                    attribute = item.Attribute("seasons");
+                    if (attribute != null)
+                        anime.Seasons = Convert.ToInt32(attribute.Value);
+
+                    attribute = item.Attribute("link");
+                    if (attribute != null)
+                        anime.Link = attribute.Value;
+
+                    
+                    
+                    ImagePath = anime.ImagePath;
+                    Description = anime.Description;
+                    Seasons = anime.Seasons;
+                    Link = anime.Link;
+                }              
+            }
+        }
 
         public DelegateCommand<object> SaveCommand { get; private set; }
         public DelegateCommand<object> SwitchCommand { get; private set; }
@@ -130,10 +243,11 @@ namespace AnimeInformation.MVVM
                     MessageBox.Show("Please complete every cell form the table!");
                 }
                 else{
-                    SaveToXml(item.AnimeName, item.Seasons, item.Description, item.ImagePath, item.Link, item.ColorPick.ToString());
-                    MessageBox.Show("The table has been saved!");
-                }              
+                    SaveToXml(item.AnimeName, item.Seasons, item.Description, item.ImagePath, item.Link, item.ColorPick.ToString());                   
+                }
+                
             }
+            MessageBox.Show("The table has been saved!");
         }        
         protected virtual void OnSwitch(object obj)
         {
@@ -142,8 +256,27 @@ namespace AnimeInformation.MVVM
                 AddPanel = "Visible";
                 EditPanel = "Hidden";
                 isEdit = false;
+                AnimeList.Clear();
             }
             else{
+                XDocument doc = null;
+                if (File.Exists(filepath))
+                    doc = XDocument.Load(filepath);
+
+                if (doc == null) return;
+
+                XAttribute attribute = null;
+
+                foreach (var item in doc.Root.Elements())
+                {
+                    var anime = new Anime();
+                    attribute = item.Attribute("name");
+                    if (attribute != null)
+                        anime.AnimeName = attribute.Value;
+
+                    AnimeList.Add(anime.AnimeName);                  
+                }
+                SelectedAnime = AnimeList[0];
                 ButtonText = "Grid";
                 AddPanel = "Hidden";
                 EditPanel = "Visible";
