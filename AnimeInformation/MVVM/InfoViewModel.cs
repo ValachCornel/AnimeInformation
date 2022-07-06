@@ -11,12 +11,11 @@ using System.Xml.Linq;
 
 namespace AnimeInformation.MVVM
 {
-    class InfoViewModel
+    class InfoViewModel : INotifyPropertyChanged
     {
         public InfoViewModel()
         {
             AnimeList = new ObservableCollection<string>();
-            AddToCombo();
         }
 
         private ObservableCollection<string> _animeList;
@@ -129,7 +128,7 @@ namespace AnimeInformation.MVVM
         }
 
 
-        private void AddToCombo()
+        public void AddToCombo()
         {
             MainViewModel mainViewModel = new MainViewModel();
             if (!mainViewModel.isEdit)
