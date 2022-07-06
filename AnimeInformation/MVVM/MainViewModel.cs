@@ -47,10 +47,9 @@ namespace AnimeInformation.MVVM
     class MainViewModel : INotifyPropertyChanged
     {
         public MainViewModel()
-        {
+        {           
             AnimeList = new ObservableCollection<string>();
             DataGrid = new ObservableCollection<Anime>();
-            Link = "https://putridparrot.com/blog/the-wpf-hyperlink/";
             ButtonText = "Info";
             LoadFromXml();           
             AddPanel = "Visible";            
@@ -214,8 +213,6 @@ namespace AnimeInformation.MVVM
                     attribute = item.Attribute("link");
                     if (attribute != null)
                         anime.Link = attribute.Value;
-
-                    
                     
                     ImagePath = anime.ImagePath;
                     Description = anime.Description;
@@ -276,6 +273,7 @@ namespace AnimeInformation.MVVM
 
                     AnimeList.Add(anime.AnimeName);                  
                 }
+                
                 SelectedAnime = AnimeList[0];
                 ButtonText = "Grid";
                 AddPanel = "Hidden";
@@ -283,7 +281,6 @@ namespace AnimeInformation.MVVM
                 isEdit = true;
             }
         }
-
         protected virtual void OnDelete(object obj)
         {
             if (SelectedGrid != null)

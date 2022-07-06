@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimeInformation"
+        xmlns:uc="clr-namespace:AnimeInformation.UserControls"
         xmlns:vm="clr-namespace:AnimeInformation.MVVM"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="800"
@@ -49,97 +50,19 @@
             </StackPanel>
         </Border>
 
-        <StackPanel Grid.Row="1" Height="450"
-                    Visibility="{Binding AddPanel}"
-                    VerticalAlignment="Top">
-            <DataGrid ItemsSource="{Binding DataGrid}"       
-                      SelectedItem="{Binding SelectedGrid}"
-                      BorderThickness="0"
-                      Background="#FFFFF2"
-                      ColumnWidth="100"
-                      Width="600"
-                      Height="300"
-                      Margin="50,50,50,0">
-            </DataGrid>
-
-            <Button Width="100"
-                    Margin="0,30,150,0"
-                    Content="Save"
-                    FontWeight="SemiBold"
-                    BorderThickness="0"
-                    Foreground="Black"
-                    Background="#FFFFF2"
-                    Command="{Binding SaveCommand}"
-                    Height="30">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-
-            <Button Width="100"
-                    Margin="150,-30,0,0"
-                    Content="Delete"
-                    FontWeight="SemiBold"
-                    BorderThickness="0"
-                    Foreground="Black"
-                    Background="#FFFFF2"
-                    Command="{Binding DeleteCommand}"
-                    Height="30">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-        </StackPanel >
-
-        <StackPanel Grid.Row="1" Height="450"
-                    Visibility="{Binding EditPanel}"
-                    VerticalAlignment="Top">
-            <StackPanel Width="300"
-                        Background="White"
-                        Height="450">
-                <Image Source="{Binding ImagePath}"
-                   Margin="0,20,0,0"
-                   Height="200"
-                   Width="200"/>
-
-                <Label Content="{Binding Description}"
-                       Margin="0,20,0,0"
-                       HorizontalContentAlignment="Center"
-                       FontSize="16"
-                       FontWeight="SemiBold"/>
-
-                <Label Content="{Binding Seasons}"
-                   HorizontalContentAlignment="Center"
-                   Margin="0,40,0,0"
-                   Width="50"
-                   Height="35"
-                   FontSize="20"
-                   FontWeight="SemiBold"/>
-
-                <TextBlock FontSize="16"                      
-                       Width="115"
-                       Margin="0,20,0,0"
-                       Height="20">
-               <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate">
-                  Information Site
-               </Hyperlink>
-                </TextBlock>
-
-                <ComboBox Width="150"
-                      Height="25"
-                      ItemsSource="{Binding AnimeList}"
-                      SelectedItem="{Binding SelectedAnime}"
-                      Background="#c8cbcf"
-                      BorderThickness="0"
-                      Margin="0,20,0,0"/>
-            </StackPanel>
-            
+        <StackPanel Grid.Row="1"
+                    Visibility="{Binding AddPanel}">
+            <uc:GridControl VerticalAlignment="Top"
+                            Height="450"/>
         </StackPanel>
-        
+
+        <StackPanel Grid.Row="1"
+                    Visibility="{Binding EditPanel}">
+            <uc:InfoControl VerticalAlignment="Top"
+                            Height="450"/>
+        </StackPanel>
+   
+
         <Button Width="100"
                 Margin="0,450,0,0"
                 Content="{Binding ButtonText}"
