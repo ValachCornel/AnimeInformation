@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.DataContext>
-        <vm:MainViewModel/>
+        <vm:InfoViewModel/>
     </UserControl.DataContext>
 
     <Grid>
