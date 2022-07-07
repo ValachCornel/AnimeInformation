@@ -36,7 +36,7 @@ namespace AnimeInformation.MVVM
             get { return _selectedAnime; }
             set
             {
-                _selectedAnime = value;                
+                _selectedAnime = value;
                 OnPropertyChanged();
                 OnComboBoxChanged();
             }
@@ -130,34 +130,27 @@ namespace AnimeInformation.MVVM
 
         public void AddToCombo()
         {
-            MainViewModel mainViewModel = new MainViewModel();
-            if (!mainViewModel.isEdit)
+            AnimeList?.Clear();
+
+            XDocument doc = null;
+            if (File.Exists(filepath))
+                doc = XDocument.Load(filepath);
+
+            if (doc == null) return;
+
+            XAttribute attribute = null;
+
+            foreach (var item in doc.Root.Elements())
             {
-                XDocument doc = null;
-                if (File.Exists(filepath))
-                    doc = XDocument.Load(filepath);
+                var anime = new Anime();
+                attribute = item.Attribute("name");
+                if (attribute != null)
+                    anime.AnimeName = attribute.Value;
 
-                if (doc == null) return;
-
-                XAttribute attribute = null;
-
-                foreach (var item in doc.Root.Elements())
-                {
-                    var anime = new Anime();
-                    attribute = item.Attribute("name");
-                    if (attribute != null)
-                        anime.AnimeName = attribute.Value;
-
-                    AnimeList.Add(anime.AnimeName);
-                }
-
-                SelectedAnime = AnimeList[0];
+                AnimeList.Add(anime.AnimeName);
             }
-            else
-            {
-                AnimeList.Clear();
-            }
-            
+
+            SelectedAnime = AnimeList[0];
         }
 
         #region INotifyPropertyChanged

@@ -87,6 +87,9 @@ namespace AnimeInformation.MVVM
             }
         }
 
+        public MVVM.GridViewModel GridViewModel { get; set; }
+        public MVVM.InfoViewModel InfoViewModel { get; set; }
+
         public DelegateCommand<object> SwitchCommand { get; private set; }
         protected virtual void InitializeCommands()
         {
@@ -102,8 +105,8 @@ namespace AnimeInformation.MVVM
                 
             }
             else{
-                InfoViewModel info = new InfoViewModel();
-                info.AddToCombo();
+                
+                InfoViewModel.AddToCombo();
                 ButtonText = "Grid";
                 AddPanel = "Hidden";
                 EditPanel = "Visible";

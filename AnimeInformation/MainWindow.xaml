@@ -53,13 +53,15 @@
         <StackPanel Grid.Row="1"
                     Visibility="{Binding AddPanel}">
             <uc:GridControl VerticalAlignment="Top"
-                            Height="450"/>
+                            Height="450"
+                            Loaded="GridControl_Loaded"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1"
                     Visibility="{Binding EditPanel}">
             <uc:InfoControl VerticalAlignment="Top"
-                            Height="450"/>
+                            Height="450"
+                            Loaded="InfoControl_Loaded"/>
         </StackPanel>
    
 

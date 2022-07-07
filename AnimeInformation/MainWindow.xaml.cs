@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using AnimeInformation.UserControls;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AnimeInformation
@@ -31,6 +32,16 @@ namespace AnimeInformation
             Application.Current.Shutdown();
         }
 
-        
+        private void GridControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is GridControl gridControl && DataContext is MVVM.MainViewModel mainViewModel)
+                mainViewModel.GridViewModel = gridControl.DataContext as MVVM.GridViewModel;
+        }
+
+        private void InfoControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is InfoControl infoControl && DataContext is MVVM.MainViewModel mainViewModel)
+                mainViewModel.InfoViewModel = infoControl.DataContext as MVVM.InfoViewModel;
+        }
     }
 }
