@@ -17,6 +17,10 @@
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -51,14 +55,14 @@
         </Border>
 
         <StackPanel Grid.Row="1"
-                    Visibility="{Binding AddPanel}">
+                    Visibility="{Binding AddPanel, Converter={StaticResource BooleanToVisibilityConverter}}">
             <uc:GridControl VerticalAlignment="Top"
                             Height="450"
                             Loaded="GridControl_Loaded"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1"
-                    Visibility="{Binding EditPanel}">
+                    Visibility="{Binding EditPanel, Converter={StaticResource BooleanToVisibilityConverter}}">
             <uc:InfoControl VerticalAlignment="Top"
                             Height="450"
                             Loaded="InfoControl_Loaded"/>

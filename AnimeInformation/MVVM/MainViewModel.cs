@@ -47,8 +47,8 @@ namespace AnimeInformation.MVVM
         public MainViewModel()
         {           
             ButtonText = "Info";                    
-            AddPanel = "Visible";            
-            EditPanel = "Hidden";
+            AddPanel = true;            
+            EditPanel = false;
             InitializeCommands();
         }
 
@@ -65,8 +65,8 @@ namespace AnimeInformation.MVVM
             }
         }
 
-        private string _addPanel;
-        public string AddPanel
+        private bool _addPanel;
+        public bool AddPanel
         {
             get { return _addPanel; }
             set
@@ -76,8 +76,8 @@ namespace AnimeInformation.MVVM
             }
         }
                 
-        private string _editPanel;
-        public string EditPanel
+        private bool _editPanel;
+        public bool EditPanel
         {
             get { return _editPanel; }
             set
@@ -99,8 +99,8 @@ namespace AnimeInformation.MVVM
         {
             if (isEdit){
                 ButtonText = "Info";
-                AddPanel = "Visible";
-                EditPanel = "Hidden";
+                AddPanel = true;
+                EditPanel = false;
                 isEdit = false;
                 
             }
@@ -108,8 +108,8 @@ namespace AnimeInformation.MVVM
                 
                 InfoViewModel.AddToCombo();
                 ButtonText = "Grid";
-                AddPanel = "Hidden";
-                EditPanel = "Visible";
+                AddPanel = false;
+                EditPanel = true;
                 isEdit = true;
             }
         }
