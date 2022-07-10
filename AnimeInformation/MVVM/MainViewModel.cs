@@ -146,7 +146,6 @@ namespace AnimeInformation.MVVM
             else{
                 
                 InfoViewModel.AddToCombo();
-                InfoViewModel.SelectedAnime = Anime.FromXml();
                 ButtonText = "Grid";
                 AddPanel = false;
                 EditPanel = true;

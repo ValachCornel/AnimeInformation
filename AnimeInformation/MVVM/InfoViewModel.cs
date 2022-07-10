@@ -15,12 +15,12 @@ namespace AnimeInformation.MVVM
     {
         public InfoViewModel()
         {
-            AnimeList = new ObservableCollection<string>();
+            _animeList = new ObservableCollection<Anime>();
 
         }
 
-        private ObservableCollection<string> _animeList;
-        public ObservableCollection<string> AnimeList
+        private ObservableCollection<Anime> _animeList;
+        public ObservableCollection<Anime> AnimeList
         {
             get { return _animeList; }
             set
@@ -31,15 +31,14 @@ namespace AnimeInformation.MVVM
             }
         }
 
-        private string _selectedAnime;
-        public string SelectedAnime
+        private Anime _selectedAnime;
+        public Anime SelectedAnime
         {
             get { return _selectedAnime; }
             set
             {
                 _selectedAnime = value;
                 OnPropertyChanged();
-                OnComboBoxChanged();
             }
         }
 
@@ -87,46 +86,6 @@ namespace AnimeInformation.MVVM
             }
         }
         string filepath = Directory.GetCurrentDirectory() + "\\Save.xml";
-        protected virtual void OnComboBoxChanged()
-        {
-            XDocument doc = null;
-            if (File.Exists(filepath))
-                doc = XDocument.Load(filepath);
-
-            if (doc == null) return;
-
-            XAttribute attribute = null;
-
-            foreach (var item in doc.Root.Elements())
-            {
-                if (item.Attribute("name").Value == SelectedAnime)
-                {
-                    var anime = new Anime();
-
-                    attribute = item.Attribute("path");
-                    if (attribute != null)
-                        anime.ImagePath = attribute.Value;
-
-                    attribute = item.Attribute("desc");
-                    if (attribute != null)
-                        anime.Description = attribute.Value;
-
-                    attribute = item.Attribute("seasons");
-                    if (attribute != null)
-                        anime.Seasons = Convert.ToInt32(attribute.Value);
-
-                    attribute = item.Attribute("link");
-                    if (attribute != null)
-                        anime.Link = attribute.Value;
-
-                    ImagePath = anime.ImagePath;
-                    Description = anime.Description;
-                    Seasons = anime.Seasons;
-                    Link = anime.Link;
-                }
-            }
-        }
-
 
         public void AddToCombo()
         {
@@ -142,15 +101,11 @@ namespace AnimeInformation.MVVM
 
             foreach (var item in doc.Root.Elements())
             {
-                var anime = new Anime();
-                attribute = item.Attribute("name");
-                if (attribute != null)
-                    anime.AnimeName = attribute.Value;
-
-                AnimeList.Add(anime.AnimeName);
+                _animeList.Add(Anime.FromXml(item.CreateReader()));
             }
 
-            SelectedAnime = AnimeList[0];
+            OnPropertyChanged(nameof(AnimeList));
+            SelectedAnime = AnimeList.FirstOrDefault();
         }
 
         #region INotifyPropertyChanged
