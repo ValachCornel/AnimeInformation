@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:AnimeInformation.MVVM"
-             xmlns:local="clr-namespace:AnimeInformation.UserControls"            
+             xmlns:local="clr-namespace:AnimeInformation.UserControls" xmlns:local1="clr-namespace:AnimeInformation.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -12,23 +12,28 @@
         <vm:InfoViewModel/>
     </UserControl.DataContext>
 
+    <UserControl.Resources>
+        <local1:StringToColorConverter x:Key="StringToColorConverter"></local1:StringToColorConverter>
+    </UserControl.Resources>
+
     <Grid>
         <StackPanel Width="300"
                         Background="White"
                         Height="450">
-            <Image Source="{Binding ImagePath}"
+            <Image Source="{Binding SelectedAnime.ImagePath}"                  
                    Margin="0,20,0,0"
                    Height="200"
                    Width="200"/>
 
-            <Label Content="{Binding Description}"
-                   Foreground="Black"
-                    Margin="0,20,0,0"
-                    HorizontalContentAlignment="Center"
-                    FontSize="16"
-                    FontWeight="SemiBold"/>
+            <Label Content="{Binding SelectedAnime.Description}"
+                   Foreground="{Binding SelectedAnime.ColorPick, Converter={StaticResource StringToColorConverter}}"
+                   Margin="0,20,0,0"
+                   HorizontalContentAlignment="Center"
+                   FontSize="16"
+                   FontWeight="SemiBold"/>
 
-            <Label Content="{Binding Seasons}"
+            <Label Content="{Binding SelectedAnime.Seasons}"
+                   Foreground="{Binding SelectedAnime.ColorPick, Converter={StaticResource StringToColorConverter}}"
                    HorizontalContentAlignment="Center"
                    Margin="0,40,0,0"
                    Width="50"
@@ -36,11 +41,12 @@
                    FontSize="20"
                    FontWeight="SemiBold"/>
 
-            <TextBlock FontSize="16"                      
+            <TextBlock FontSize="16"    
+                       Foreground="{Binding SelectedAnime.ColorPick, Converter={StaticResource StringToColorConverter}}"
                        Width="115"
                        Margin="0,20,0,0"
                        Height="20">
-               <Hyperlink NavigateUri="{Binding Link}" RequestNavigate="Hyperlink_RequestNavigate">
+               <Hyperlink NavigateUri="{Binding SelectedAnime.Link}" RequestNavigate="Hyperlink_RequestNavigate">
                   Information Site
                </Hyperlink>
             </TextBlock>
@@ -51,7 +57,16 @@
                       SelectedItem="{Binding SelectedAnime}"
                       Background="#c8cbcf"
                       BorderThickness="0"
-                      Margin="0,20,0,0"/>
+                      Margin="0,20,0,0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image HorizontalAlignment="Left" Width="20" Height="20" Source="{Binding ImagePath}"/>
+                            <TextBlock Text="{Binding AnimeName}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </StackPanel>
     </Grid>
 </UserControl>

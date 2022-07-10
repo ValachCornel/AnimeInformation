@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace AnimeInformation.MVVM
@@ -16,7 +17,6 @@ namespace AnimeInformation.MVVM
         public InfoViewModel()
         {
             _animeList = new ObservableCollection<Anime>();
-
         }
 
         private ObservableCollection<Anime> _animeList;
@@ -42,46 +42,13 @@ namespace AnimeInformation.MVVM
             }
         }
 
-        private string _imagePath;
-        public string ImagePath
+        private Brush _textColor;
+        public Brush TextColor
         {
-            get { return _imagePath; }
+            get { return _textColor; }
             set
             {
-                _imagePath = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _description;
-        public string Description
-        {
-            get { return _description; }
-            set
-            {
-                _description = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _seasons;
-        public int Seasons
-        {
-            get { return _seasons; }
-            set
-            {
-                _seasons = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _link;
-        public string Link
-        {
-            get { return _link; }
-            set
-            {
-                _link = value;
+                _textColor = value;
                 OnPropertyChanged();
             }
         }
@@ -101,11 +68,14 @@ namespace AnimeInformation.MVVM
 
             foreach (var item in doc.Root.Elements())
             {
-                _animeList.Add(Anime.FromXml(item.CreateReader()));
+                _animeList.Add(Anime.FromXml(item.CreateReader()));               
             }
 
             OnPropertyChanged(nameof(AnimeList));
             SelectedAnime = AnimeList.FirstOrDefault();
+            string color = SelectedAnime.ColorPick.ToString();
+            SolidColorBrush brush = (SolidColorBrush)new BrushConverter().ConvertFromString(color);
+            TextColor = brush;
         }
 
         #region INotifyPropertyChanged
