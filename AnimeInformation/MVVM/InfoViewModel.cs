@@ -16,6 +16,7 @@ namespace AnimeInformation.MVVM
         public InfoViewModel()
         {
             AnimeList = new ObservableCollection<string>();
+
         }
 
         private ObservableCollection<string> _animeList;
@@ -95,7 +96,6 @@ namespace AnimeInformation.MVVM
             if (doc == null) return;
 
             XAttribute attribute = null;
-
 
             foreach (var item in doc.Root.Elements())
             {

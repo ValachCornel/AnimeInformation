@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Documents;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace AnimeInformation.MVVM
@@ -19,6 +20,44 @@ namespace AnimeInformation.MVVM
         public string ImagePath { get; set; }
         public string Link { get; set; }
         public Color ColorPick { get; set; }
+
+        public static Anime FromXml(XmlReader element)
+        {
+            Anime anime = new Anime();
+
+            element.MoveToContent();
+            while (element.MoveToNextAttribute())
+            {
+                if (element.NodeType == XmlNodeType.Attribute)
+                {
+                    switch (element.Name)
+                    {
+                        case "name":
+                            anime.AnimeName = element.Value;
+                            break;
+                        case "seasons":
+                            anime.Seasons = Convert.ToInt32(element.Value);
+                            break;
+                        case "desc":
+                            anime.Description = element.Value;
+                            break;
+                        case "path":
+                            anime.ImagePath = element.Value;
+                            break;
+                        case "link":
+                            anime.Link = element.Value;
+                            break;
+                        case "color":
+                            Enum.TryParse(element.Value, out Color color);
+                            anime.ColorPick = color;
+                            break;
+
+                    }
+                }
+
+            }
+            return anime;
+        }
     }
 
     public enum Color
@@ -107,6 +146,7 @@ namespace AnimeInformation.MVVM
             else{
                 
                 InfoViewModel.AddToCombo();
+                InfoViewModel.SelectedAnime = Anime.FromXml();
                 ButtonText = "Grid";
                 AddPanel = false;
                 EditPanel = true;
